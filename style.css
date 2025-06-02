@@ -101,9 +101,9 @@ a:hover {
 
 .header .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Ensures logo and menu icon/nav are spaced out */
     align-items: center;
-    flex-wrap: wrap; /* For responsiveness */
+    flex-wrap: wrap;
 }
 
 .logo {
@@ -112,17 +112,18 @@ a:hover {
 }
 
 .logo img {
-    height: 40px; /* Adjust as needed for the extracted logo */
+    height: 90px; /* Adjust as needed for the extracted logo */
     margin-right: 10px;
     filter: drop-shadow(0 0 1px rgba(0,0,0,0.2)); /* Slight shadow for logo */
 }
 
-.logo h1 {
+/* Note: Your HTML uses <p class="tagline">. If you want a heading, adjust HTML. */
+/* .logo h1 {
     font-family: 'Playfair Display', serif;
     font-size: 2em;
     color: var(--secondary-color);
     margin: 0;
-}
+} */
 
 .logo .tagline {
     font-size: 0.9em;
@@ -161,7 +162,7 @@ a:hover {
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/office_door_sticker.jpg') no-repeat center center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
     color: var(--white);
     text-align: center;
     padding: 150px 0;
@@ -333,6 +334,40 @@ a:hover {
     font-size: 0.9em;
 }
 
+/* NEW: Hamburger Menu Icon Styles */
+.hamburger-menu {
+    display: none; /* Hidden by default on larger screens */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it's above other elements */
+}
+
+.hamburger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--secondary-color);
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hamburger menu open/close animation (X shape) */
+.hamburger-menu.open span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+}
+
+.hamburger-menu.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.open span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
+
+
 /* Responsive Design */
 @media (max-width: 992px) {
     .section-title {
@@ -359,8 +394,28 @@ a:hover {
 
 @media (max-width: 768px) {
     .header .container {
+        /* Keep logo and menu icon on one line, spaced out */
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* NEW: Hide main navigation by default on mobile */
+    .main-nav {
+        display: none; /* Crucial: hides the nav bar */
         flex-direction: column;
-        gap: 15px;
+        width: 100%;
+        position: absolute;
+        top: 100px; /* Adjust based on your header's actual height */
+        left: 0;
+        background-color: var(--white);
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        padding: 20px 0;
+        animation: slideIn 0.3s forwards; /* Smooth slide-in effect */
+    }
+
+    /* NEW: Show navigation when 'open' class is toggled by JS */
+    .main-nav.open {
+        display: flex;
     }
 
     .main-nav ul {
@@ -377,6 +432,11 @@ a:hover {
     .main-nav a {
         padding: 8px 0;
         display: block;
+    }
+
+    /* NEW: Show hamburger icon on mobile */
+    .hamburger-menu {
+        display: flex;
     }
 
     .section-padding {
@@ -407,6 +467,18 @@ a:hover {
 
     .contact-form {
         padding: 25px;
+    }
+
+    /* NEW: Animation for mobile menu appearance */
+    @keyframes slideIn {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 }
 
