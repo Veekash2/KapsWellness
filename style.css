@@ -117,14 +117,6 @@ a:hover {
     filter: drop-shadow(0 0 1px rgba(0,0,0,0.2)); /* Slight shadow for logo */
 }
 
-/* Note: Your HTML uses <p class="tagline">. If you want a heading, adjust HTML. */
-/* .logo h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2em;
-    color: var(--secondary-color);
-    margin: 0;
-} */
-
 .logo .tagline {
     font-size: 0.9em;
     color: var(--accent-color);
@@ -498,5 +490,66 @@ a:hover {
     .btn {
         padding: 10px 20px;
         font-size: 0.9em;
+    }
+}
+/* ADD THIS CLASS to your style.css */
+.hidden {
+    display: none !important;
+}
+
+/* --- New Profile Section Styling (Optional but Recommended) --- */
+.profile-section {
+    background-color: var(--background-light);
+}
+
+.profile-group, .profile-grid {
+    margin-bottom: 50px;
+}
+
+.profile-group h3, .profile-column h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.experience-item {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.experience-item h4 {
+    color: var(--secondary-color);
+    font-size: 1.3em;
+    margin-bottom: 5px;
+}
+
+.experience-item .dates, .experience-item .employer {
+    font-size: 0.9em;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.experience-item ul {
+    list-style: disc; 
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+/* Responsive adjustment for the profile grid */
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
     }
 }
