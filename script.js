@@ -1,33 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
     const hamburgerMenu = document.getElementById('hamburger-menu');
     const mainNav = document.getElementById('main-nav');
+    
+    // Target the form by its new ID
+    const contactForm = document.getElementById('contact-form'); 
 
-    // Add click listener to the hamburger menu icon
-    if (hamburgerMenu && mainNav) { // Ensure both elements exist
-        hamburgerMenu.addEventListener('click', function() {
-            mainNav.classList.toggle('open');       // Toggles visibility of the nav
-            hamburgerMenu.classList.toggle('open'); // Toggles hamburger icon animation
-        });
+    // Define your EmailJS Credentials (REPLACE THESE PLACEHOLDERS)
+    const SERVICE_ID = 'service_ff6ckrp';  
+    const TEMPLATE_ID = 'template_kqtt8c6'; 
+    const PUBLIC_KEY = '3sBBSCISY5f-5HMrG'; // This should also be in the HTML <head>
 
-        // Optional: Close menu when a nav link is clicked (for single-page sites)
-        mainNav.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (mainNav.classList.contains('open')) { // Only close if it's open
-                    mainNav.classList.remove('open');
-                    hamburgerMenu.classList.remove('open');
-                }
-            });
-        });
-    } else {
-        console.error("Hamburger menu or main navigation element not found. Check your HTML IDs.");
-    }
-});
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburgerMenu = document.getElementById('hamburger-menu');
-    const mainNav = document.getElementById('main-nav');
-
-    // --- 1. Hamburger Menu Logic (Existing) ---
+    // --- 1. Hamburger Menu and Navigation Logic ---
     if (hamburgerMenu && mainNav) { 
+        // Logic to toggle hamburger menu and nav remains here...
         hamburgerMenu.addEventListener('click', function() {
             mainNav.classList.toggle('open');
             hamburgerMenu.classList.toggle('open');
@@ -41,26 +26,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-    } else {
-        console.error("Hamburger menu or main navigation element not found. Check your HTML IDs.");
     }
 
-    // --- 2. New Profile Toggle Logic (ADD THIS) ---
+    // --- 2. Profile Toggle Logic ---
     const toggleProfileBtn = document.getElementById('toggle-profile-btn');
     const profileContentArea = document.getElementById('profile-content-area');
 
     if (toggleProfileBtn && profileContentArea) {
         toggleProfileBtn.addEventListener('click', function() {
-            // Check if the content is currently hidden
             const isHidden = profileContentArea.classList.contains('hidden');
 
             if (isHidden) {
-                profileContentArea.classList.remove('hidden'); // Show the content
-                toggleProfileBtn.textContent = 'Hide Full Professional Profile'; // Update button text
+                profileContentArea.classList.remove('hidden');
+                toggleProfileBtn.textContent = 'Hide Full Professional Profile';
             } else {
-                profileContentArea.classList.add('hidden'); // Hide the content
-                toggleProfileBtn.textContent = 'Show Full Professional Profile'; // Update button text
+                profileContentArea.classList.add('hidden');
+                toggleProfileBtn.textContent = 'Show Full Professional Profile';
             }
+        });
+    }
+
+    // --- 3. EmailJS Form Submission Logic (FIXED POST ISSUE) ---
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            // 🛑 THIS IS THE FIX 🛑: Stops the default browser POST action and prevents the 405 error
+            event.preventDefault(); 
+
+            // Get the submit button for feedback
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton ? submitButton.textContent : 'Send Message';
+            
+            if (submitButton) submitButton.textContent = 'Sending...';
+
+            // Send the form data to EmailJS
+            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, this, PUBLIC_KEY)
+                .then(function() {
+                    console.log('SUCCESS! Email Sent.');
+                    if (submitButton) submitButton.textContent = 'Message Sent!';
+                    alert('Thank you! Your message has been sent successfully.');
+                    contactForm.reset(); // Clear the form
+                    // Reset button text after a short delay
+                    setTimeout(() => { 
+                         if (submitButton) submitButton.textContent = originalButtonText;
+                    }, 5000); 
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Message failed to send. Please check your network or try again later.');
+                    if (submitButton) submitButton.textContent = originalButtonText;
+                });
         });
     }
 });
